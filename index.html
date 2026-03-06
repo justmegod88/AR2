@@ -31,7 +31,6 @@
     gap:12px;
   }
 
-  /* 1. 타이틀 구조 개선 */
   .hero{
     border:1px solid var(--line);
     background:var(--card);
@@ -179,10 +178,10 @@
   }
   .muted{ color:var(--sub); font-weight:800; font-size:13px; line-height:1.45; }
 
-  /* 3. 전체 정렬 정리 */
   .pupilWrap{
     display:flex;
-    gap:20px;
+    flex-direction:column;
+    gap:16px;
     align-items:flex-start;
     justify-content:flex-start;
   }
@@ -195,6 +194,7 @@
     position:relative;
     overflow:hidden;
     flex:0 0 auto;
+    align-self:center;
   }
   .iris{
     position:absolute;
@@ -214,31 +214,14 @@
     transition: width .35s ease, height .35s ease;
   }
   .spec{
-    flex:1;
+    width:100%;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:12px;
     min-width:0;
-    align-items:flex-start;
-  }
-  .pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:8px 10px;
-    background:#fafbfc;
-    font-weight:900;
-    color:var(--text);
-    width:fit-content;
-  }
-  .pill span{
-    color:var(--sub);
-    font-weight:900;
+    align-items:stretch;
   }
 
-  /* 1,2,3. 제목/가이드/정렬 */
   .pupilTitle{
     margin:0 0 8px;
     font-size:24px;
@@ -251,34 +234,45 @@
     color:var(--sub);
     font-size:13px;
     font-weight:700;
-    line-height:1.45;
+    line-height:1.5;
   }
-  .pupilControlRow{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    margin-bottom:6px;
+
+  /* 1,2. 원용도수/가입도/예상동공 하단 배치 + 동일 정렬 */
+  .pupilInfoList{
     width:100%;
-  }
-  .pupilField{
     display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .pupilInfoRow{
+    width:100%;
+    display:grid;
+    grid-template-columns: 1fr auto;
     align-items:center;
-    gap:8px;
-    font-weight:800;
+    gap:14px;
+  }
+  .pupilInfoLabel{
+    font-size:18px;
+    font-weight:900;
     color:var(--sub);
-    min-width:0;
   }
-  .pupilField label{
-    display:flex;
-    align-items:center;
-    gap:8px;
+  .pupilInfoValue{
+    font-size:18px;
+    font-weight:900;
+    color:var(--text);
+  }
+  .pupilSelect{
+    min-width:160px;
+    font-size:18px;
+    font-weight:900;
   }
 
   .lensWrap{
     display:flex;
-    gap:12px;
+    flex-direction:column;
+    gap:14px;
     align-items:center;
-    justify-content:space-between;
+    justify-content:flex-start;
   }
   .lens{
     width:220px;
@@ -323,12 +317,14 @@
   .ring.mid { border-color: rgba(0,160,120,.50); }
   .ring.dist{ border-color: rgba(0,94,184,.45); }
 
+  /* 7. 렌즈 하단 정렬 */
   .legend{
+    width:100%;
     display:flex;
     flex-direction:column;
-    gap:8px;
-    flex:1;
+    gap:10px;
     min-width:0;
+    align-items:flex-start;
   }
   .tagRow{
     display:flex; gap:8px; flex-wrap:wrap;
@@ -438,6 +434,15 @@
   }
   .explain strong{ color:var(--text); }
 
+  /* 3. 페이지 하단 문구 */
+  .pageFootnote{
+    color:var(--sub);
+    font-weight:800;
+    font-size:13px;
+    line-height:1.5;
+    padding:2px 4px 12px;
+  }
+
   @media (max-width: 980px){
     body{ padding:12px; }
     .grid{ grid-template-columns: 1fr; }
@@ -467,26 +472,23 @@
     .field select{
       min-width:96px;
     }
-    .pupilWrap{
-      gap:16px;
-    }
-    .pupilControlRow{
-      gap:12px;
-    }
-    .pupilField{
-      width:100%;
-    }
-    .pupilField label{
-      width:100%;
-      justify-content:space-between;
+    .pupilInfoLabel,
+    .pupilInfoValue,
+    .pupilSelect{
+      font-size:16px;
     }
   }
   @media (max-width: 520px){
     .eye,.lens{ width:190px; height:190px; }
-    .pupilWrap,.lensWrap{ flex-direction:column; align-items:flex-start; }
     .btn{ padding:10px 12px; }
     .heroBanner{ font-size:20px; }
     .pupilTitle{ font-size:22px; }
+    .pupilInfoRow{
+      grid-template-columns: 1fr auto;
+    }
+    .pupilSelect{
+      min-width:140px;
+    }
   }
 </style>
 </head>
@@ -527,7 +529,7 @@
   <div class="grid">
     <div class="card">
       <h3 class="pupilTitle">도수, 나이(가입도)에 따른 동공 사이즈 변화</h3>
-      <p class="pupilGuide">원용도수 및 가입도를 선택하여 동공 사이즈를 확인해 보세요.</p>
+      <p class="pupilGuide">가입도가 높고 원시일수록(근시양이 작을 수록) 동공 사이즈가 작아집니다. 원용도수 및 가입도를 조정하여 동공사이즈의 변화를 확인해 보세요.</p>
 
       <div class="pupilWrap">
         <div class="eye" aria-label="eye">
@@ -536,35 +538,32 @@
         </div>
 
         <div class="spec">
-          <div class="pupilControlRow">
-            <div class="pupilField">
-              <label>원용도수
-                <select id="sphere"></select>
-              </label>
+          <div class="pupilInfoList">
+            <div class="pupilInfoRow">
+              <div class="pupilInfoLabel">원용도수</div>
+              <select id="sphere" class="pupilSelect"></select>
             </div>
 
-            <div class="pupilField">
-              <label>가입도
-                <select id="add">
-                  <option value="0">Low</option>
-                  <option value="1">Mid</option>
-                  <option value="2">High</option>
-                </select>
-              </label>
+            <div class="pupilInfoRow">
+              <div class="pupilInfoLabel">가입도</div>
+              <select id="add" class="pupilSelect">
+                <option value="0">Low</option>
+                <option value="1">Mid</option>
+                <option value="2">High</option>
+              </select>
             </div>
-          </div>
 
-          <div class="pill"><span>Estimated Pupil</span> <b id="pupilText">4.0 mm</b></div>
-
-          <div class="muted" id="pupilNote">
-            *동공사이즈 및 이미지는 이해를 돕기 위한 가상이미지 입니다.
+            <div class="pupilInfoRow">
+              <div class="pupilInfoLabel">예상 동공 사이즈</div>
+              <div class="pupilInfoValue" id="pupilText">4.0 mm</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <h3>렌즈 구조</h3>
+      <h3>동공 사이즈와 광학부 사이즈에 따른 시야</h3>
       <div class="lensWrap">
         <div class="lens" aria-label="lens">
           <div class="ozRing" id="ozRing"></div>
@@ -587,8 +586,6 @@
             <div class="tag"><span class="dot m"></span> 중</div>
             <div class="tag"><span class="dot n"></span> 근</div>
           </div>
-
-          <div class="muted">- - 동공</div>
 
           <div class="pill"><span>Estimated Optic Zone</span> <b id="opticText">5.0 mm</b></div>
         </div>
@@ -624,6 +621,10 @@
         <div class="muted" id="explainConclusion" style="margin-top:12px;"></div>
       </div>
     </div>
+  </div>
+
+  <div class="pageFootnote">
+    *동공사이즈 및 이미지는 이해를 돕기 위한 가상이미지 입니다.
   </div>
 
 </div>
