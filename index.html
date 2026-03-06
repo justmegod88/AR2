@@ -237,12 +237,11 @@
     line-height:1.5;
   }
 
-  /* 1,2. 원용도수/가입도/예상동공 하단 배치 + 동일 정렬 */
   .pupilInfoList{
     width:100%;
     display:flex;
     flex-direction:column;
-    gap:12px;
+    gap:18px;
   }
   .pupilInfoRow{
     width:100%;
@@ -260,11 +259,41 @@
     font-size:18px;
     font-weight:900;
     color:var(--text);
+    min-width:100px;
+    text-align:right;
   }
-  .pupilSelect{
-    min-width:160px;
+
+  /* 슬라이더 UI */
+  .sliderBlock{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .sliderTop{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:14px;
+    align-items:center;
+  }
+  .sliderValue{
     font-size:18px;
     font-weight:900;
+    color:var(--text);
+    min-width:100px;
+    text-align:right;
+  }
+  .sliderScale{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    font-weight:800;
+    color:var(--sub);
+    padding:0 2px;
+  }
+  input[type="range"]{
+    width:100%;
+    margin:0;
   }
 
   .lensWrap{
@@ -317,7 +346,6 @@
   .ring.mid { border-color: rgba(0,160,120,.50); }
   .ring.dist{ border-color: rgba(0,94,184,.45); }
 
-  /* 7. 렌즈 하단 정렬 */
   .legend{
     width:100%;
     display:flex;
@@ -434,7 +462,6 @@
   }
   .explain strong{ color:var(--text); }
 
-  /* 3. 페이지 하단 문구 */
   .pageFootnote{
     color:var(--sub);
     font-weight:800;
@@ -474,7 +501,7 @@
     }
     .pupilInfoLabel,
     .pupilInfoValue,
-    .pupilSelect{
+    .sliderValue{
       font-size:16px;
     }
   }
@@ -485,9 +512,6 @@
     .pupilTitle{ font-size:22px; }
     .pupilInfoRow{
       grid-template-columns: 1fr auto;
-    }
-    .pupilSelect{
-      min-width:140px;
     }
   }
 </style>
@@ -539,18 +563,30 @@
 
         <div class="spec">
           <div class="pupilInfoList">
-            <div class="pupilInfoRow">
-              <div class="pupilInfoLabel">원용도수</div>
-              <select id="sphere" class="pupilSelect"></select>
+            <div class="sliderBlock">
+              <div class="sliderTop">
+                <div class="pupilInfoLabel">원용도수</div>
+                <div class="sliderValue" id="sphereValue">+6.00</div>
+              </div>
+              <input id="sphereSlider" type="range" min="-9" max="6" step="1" value="-4">
+              <div class="sliderScale">
+                <span>+6.00</span>
+                <span>0.00</span>
+                <span>-9.00</span>
+              </div>
             </div>
 
-            <div class="pupilInfoRow">
-              <div class="pupilInfoLabel">가입도</div>
-              <select id="add" class="pupilSelect">
-                <option value="0">Low</option>
-                <option value="1">Mid</option>
-                <option value="2">High</option>
-              </select>
+            <div class="sliderBlock">
+              <div class="sliderTop">
+                <div class="pupilInfoLabel">가입도</div>
+                <div class="sliderValue" id="addValue">Low</div>
+              </div>
+              <input id="addSlider" type="range" min="0" max="2" step="1" value="0">
+              <div class="sliderScale">
+                <span>Low</span>
+                <span>Mid</span>
+                <span>High</span>
+              </div>
             </div>
 
             <div class="pupilInfoRow">
@@ -632,8 +668,11 @@
 <script>
   const camBtn = document.getElementById('camBtn');
 
-  const sphereSel = document.getElementById('sphere');
-  const addSel = document.getElementById('add');
+  const sphereSlider = document.getElementById('sphereSlider');
+  const addSlider = document.getElementById('addSlider');
+  const sphereValue = document.getElementById('sphereValue');
+  const addValue = document.getElementById('addValue');
+
   const designRadios = document.querySelectorAll('input[name="design"]');
 
   const pupilEl = document.getElementById('pupil');
@@ -674,25 +713,29 @@
     return (mm / 14.5) * lensPx;
   }
 
-  (function buildSphere(){
-    const vals = [];
-    for(let v=6; v>=-9; v--){
-      vals.push(v);
-    }
-    sphereSel.innerHTML = vals.map(v=>{
-      const sign = v>0 ? "+" : "";
-      return `<option value="${v.toFixed(2)}">${sign}${v.toFixed(2)}</option>`;
-    }).join("");
-    sphereSel.value = (-4).toFixed(2);
-  })();
+  function getSphereValue(){
+    return Number(sphereSlider.value);
+  }
+
+  function getAddIndex(){
+    return Number(addSlider.value);
+  }
+
+  function formatSphere(v){
+    return `${v > 0 ? '+' : ''}${v.toFixed(2)}`;
+  }
+
+  function formatAdd(idx){
+    return ['Low','Mid','High'][idx];
+  }
 
   function getDesignMode(){
     return [...designRadios].find(r=>r.checked)?.value || 'standard';
   }
 
   function calcPupilMM(){
-    const sphere = parseFloat(sphereSel.value);
-    const addIdx = Number(addSel.value);
+    const sphere = getSphereValue();
+    const addIdx = getAddIndex();
 
     let pupil = 4.6;
     if(addIdx === 1) pupil -= 0.35;
@@ -738,11 +781,11 @@
   }
 
   function applyOverlays(pupilMM, ozMM){
-    const pPx = mmToLensPx(pupilMM);
+    const pupilPX = mmToEyePupilPx(pupilMM);
     const ozPx = mmToLensPx(ozMM);
 
-    pupilOverlay.style.width = `${pPx}px`;
-    pupilOverlay.style.height = `${pPx}px`;
+    pupilOverlay.style.width = `${pupilPX}px`;
+    pupilOverlay.style.height = `${pupilPX}px`;
 
     ozRing.style.width = `${ozPx}px`;
     ozRing.style.height = `${ozPx}px`;
@@ -839,6 +882,9 @@
     const pupilMM = calcPupilMM();
     const pupilPX = mmToEyePupilPx(pupilMM);
 
+    sphereValue.textContent = formatSphere(getSphereValue());
+    addValue.textContent = formatAdd(getAddIndex());
+
     pupilEl.style.width = `${pupilPX}px`;
     pupilEl.style.height = `${pupilPX}px`;
     pupilText.textContent = `${pupilMM.toFixed(1)} mm`;
@@ -852,8 +898,8 @@
     applyVisionEffect(mode, pupilMM, ozMM);
   }
 
-  sphereSel.addEventListener('change', updateAll);
-  addSel.addEventListener('change', updateAll);
+  sphereSlider.addEventListener('input', updateAll);
+  addSlider.addEventListener('input', updateAll);
   designRadios.forEach(r=>r.addEventListener('change', updateAll));
   window.addEventListener('resize', ()=>{ updateAll(); });
 
