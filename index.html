@@ -1,3 +1,16 @@
+좋아. 요청한 5개만 반영해서 전체 코드 통째로 다시 줄게.
+다른 부분은 건드리지 않고, 아래만 수정했어.
+
+반영한 내용:
+	1.	타이틀 구조 개선
+	2.	원용도수 / ADD 가로 정렬 개선
+	3.	문구 수정 → “자동 계산된 동공사이즈 기준으로 미세 조정할수 있습니다.”
+	4.	초기 상태는 동공 + 광학부 동시 노출
+	5.	동공 버튼 클릭 시 동공만 / 렌즈 광학부 버튼 클릭 시 광학부만 노출
+(광학부만 볼 때는 원/중/근 유지, 동공만 볼 때는 광학부 구조 숨김)
+
+아래 코드 그대로 index.html 전체 덮어쓰기 하면 돼.
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -31,27 +44,37 @@
     gap:12px;
   }
 
-  /* 상단 타이틀 */
+  /* 1. 타이틀 구조 개선 */
   .hero{
     border:1px solid var(--line);
     background:var(--card);
-    border-radius:16px;
-    padding:18px;
+    border-radius:20px;
+    padding:16px;
+    box-shadow:0 6px 20px rgba(16,42,67,.05);
+  }
+  .heroInner{
+    border-radius:22px;
+    padding:24px 20px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,.18), transparent 30%),
+      linear-gradient(135deg, #1660c9 0%, #2380f4 55%, #3aa0ff 100%);
+    text-align:center;
+  }
+  .heroSub{
+    font-size:12px;
+    font-weight:800;
+    color:rgba(255,255,255,.88);
+    margin-bottom:8px;
+    letter-spacing:.2px;
   }
   .heroBanner{
-    border-radius:20px;
-    padding:18px 20px;
     color:#fff;
     font-weight:900;
     font-size:30px;
     line-height:1.2;
-    background:linear-gradient(135deg, #1a67d2 0%, #2d8cff 100%);
-    width:100%;
-    text-align:center;
     white-space:nowrap;
   }
 
-  /* 조건 설정 */
   .setupCard{
     border:1px solid var(--line);
     background:var(--card);
@@ -71,12 +94,19 @@
     align-items:flex-start;
     justify-content:space-between;
   }
+
+  /* 2. 원용도수 / ADD 가로 배열 개선 */
   .controls{
     display:flex;
-    gap:10px;
+    flex-direction:column;
+    gap:12px;
+    width:100%;
+  }
+  .controlRow{
+    display:flex;
+    gap:16px;
     align-items:center;
     flex-wrap:wrap;
-    min-width:0;
   }
   label{
     display:flex;
@@ -86,6 +116,12 @@
     color:var(--sub);
     white-space:nowrap;
   }
+  .field{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-width:0;
+  }
   select{
     border:1px solid var(--line);
     padding:8px 10px;
@@ -93,20 +129,29 @@
     background:#fff;
     font-weight:800;
     color:var(--text);
+    min-width:110px;
   }
 
   .toggleGroup{
     display:flex;
     gap:10px;
     align-items:center;
-    padding:8px 10px;
+    padding:10px 12px;
     border:1px solid var(--line);
-    border-radius:12px;
+    border-radius:16px;
     background:#fafbfc;
+    width:100%;
   }
-  .toggleGroup strong{ color:var(--sub); font-size:13px; font-weight:900; }
+  .toggleGroup strong{
+    color:var(--sub);
+    font-size:13px;
+    font-weight:900;
+    min-width:86px;
+  }
   .radio{
-    display:flex; gap:10px; align-items:center;
+    display:flex;
+    gap:10px;
+    align-items:center;
     flex-wrap:wrap;
   }
   .radio label{
@@ -416,6 +461,27 @@
       white-space:normal;
     }
   }
+  @media (max-width: 640px){
+    .topbar{
+      flex-direction:column;
+      align-items:stretch;
+    }
+    .controlRow{
+      gap:12px;
+      align-items:center;
+    }
+    .field{
+      flex:1 1 0;
+      min-width:140px;
+    }
+    .field label{
+      width:100%;
+      justify-content:space-between;
+    }
+    .field select{
+      min-width:96px;
+    }
+  }
   @media (max-width: 520px){
     .eye,.lens{ width:190px; height:190px; }
     .pupilWrap,.lensWrap{ flex-direction:column; align-items:flex-start; }
@@ -436,7 +502,10 @@
   </svg>
 
   <div class="hero">
-    <div class="heroBanner">183가지 광학부 디자인</div>
+    <div class="heroInner">
+      <div class="heroSub">교육용 시뮬레이션</div>
+      <div class="heroBanner">183가지 광학부 디자인</div>
+    </div>
   </div>
 
   <div class="setupCard">
@@ -444,17 +513,23 @@
 
     <div class="topbar">
       <div class="controls">
-        <label>원용도수
-          <select id="sphere"></select>
-        </label>
+        <div class="controlRow">
+          <div class="field">
+            <label>원용도수
+              <select id="sphere"></select>
+            </label>
+          </div>
 
-        <label>ADD
-          <select id="add">
-            <option value="0">Low</option>
-            <option value="1">Mid</option>
-            <option value="2">High</option>
-          </select>
-        </label>
+          <div class="field">
+            <label>ADD
+              <select id="add">
+                <option value="0">Low</option>
+                <option value="1">Mid</option>
+                <option value="2">High</option>
+              </select>
+            </label>
+          </div>
+        </div>
 
         <div class="toggleGroup">
           <strong>광학부 디자인</strong>
@@ -472,7 +547,7 @@
         <div class="sliderValue" id="pupilAdjustValue">0.0 mm</div>
       </div>
       <input type="range" id="pupilAdjust" min="-1.0" max="1.0" step="0.1" value="0">
-      <div class="sliderNote">자동 계산된 동공사이즈를 기준으로 사용자가 미세하게 조정할 수 있습니다.</div>
+      <div class="sliderNote">자동 계산된 동공사이즈 기준으로 미세 조정할수 있습니다.</div>
     </div>
   </div>
 
@@ -509,8 +584,9 @@
 
         <div class="legend">
           <div class="toggleMini">
-            <button class="miniBtn active" id="showPupilBtn" type="button">동공</button>
-            <button class="miniBtn active" id="showOpticBtn" type="button">광학부</button>
+            <button class="miniBtn active" id="showBothBtn" type="button">동공+광학부</button>
+            <button class="miniBtn" id="showPupilBtn" type="button">동공</button>
+            <button class="miniBtn" id="showOpticBtn" type="button">렌즈 광학부</button>
           </div>
 
           <div class="tagRow">
@@ -577,6 +653,7 @@
   const ozRing = document.getElementById('ozRing');
   const pupilOverlay = document.getElementById('pupilOverlay');
 
+  const showBothBtn = document.getElementById('showBothBtn');
   const showPupilBtn = document.getElementById('showPupilBtn');
   const showOpticBtn = document.getElementById('showOpticBtn');
 
@@ -595,8 +672,7 @@
 
   const standardOpticZone = 5.0;
 
-  let showPupil = true;
-  let showOptic = true;
+  let overlayMode = 'both'; // 4. 처음에는 둘 다 노출
 
   function getLensPx(){
     const rect = document.querySelector('.lens').getBoundingClientRect();
@@ -685,17 +761,29 @@
   }
 
   function applyOverlayVisibility(){
-    pupilOverlay.style.opacity = showPupil ? '1' : '0';
+    if(overlayMode === 'both'){
+      pupilOverlay.style.opacity = '1';
+      ozRing.style.opacity = '1';
+      ringDist.style.opacity = '1';
+      ringMid.style.opacity = '1';
+      ringNear.style.opacity = '1';
+    }else if(overlayMode === 'pupil'){
+      pupilOverlay.style.opacity = '1';
+      ozRing.style.opacity = '0';
+      ringDist.style.opacity = '0';
+      ringMid.style.opacity = '0';
+      ringNear.style.opacity = '0';
+    }else if(overlayMode === 'optic'){
+      pupilOverlay.style.opacity = '0';
+      ozRing.style.opacity = '1';
+      ringDist.style.opacity = '1';
+      ringMid.style.opacity = '1';
+      ringNear.style.opacity = '1';
+    }
 
-    ozRing.style.opacity = showOptic ? '1' : '0';
-
-    /* 광학부만 봐도 원/중/근은 유지 */
-    ringDist.style.opacity = '1';
-    ringMid.style.opacity = '1';
-    ringNear.style.opacity = '1';
-
-    showPupilBtn.classList.toggle('active', showPupil);
-    showOpticBtn.classList.toggle('active', showOptic);
+    showBothBtn.classList.toggle('active', overlayMode === 'both');
+    showPupilBtn.classList.toggle('active', overlayMode === 'pupil');
+    showOpticBtn.classList.toggle('active', overlayMode === 'optic');
   }
 
   function setExplain(tags, conclusion){
@@ -784,12 +872,16 @@
   pupilAdjust.addEventListener('input', updateAll);
   window.addEventListener('resize', ()=>{ updateAll(); });
 
+  showBothBtn.addEventListener('click', ()=>{
+    overlayMode = 'both';
+    applyOverlayVisibility();
+  });
   showPupilBtn.addEventListener('click', ()=>{
-    showPupil = !showPupil;
+    overlayMode = 'pupil';
     applyOverlayVisibility();
   });
   showOpticBtn.addEventListener('click', ()=>{
-    showOptic = !showOptic;
+    overlayMode = 'optic';
     applyOverlayVisibility();
   });
 
