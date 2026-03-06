@@ -31,17 +31,17 @@
     gap:12px;
   }
 
-  /* 1. 타이틀 구조 개선 */
+  /* 1,2. 상단 타이틀 슬림하게 + 아큐브 시뮬레이션 */
   .hero{
     border:1px solid var(--line);
     background:var(--card);
     border-radius:20px;
-    padding:16px;
+    padding:14px;
     box-shadow:0 6px 20px rgba(16,42,67,.05);
   }
   .heroInner{
     border-radius:22px;
-    padding:24px 20px;
+    padding:14px 20px;
     background:
       radial-gradient(circle at 15% 20%, rgba(255,255,255,.18), transparent 30%),
       linear-gradient(135deg, #1660c9 0%, #2380f4 55%, #3aa0ff 100%);
@@ -51,13 +51,13 @@
     font-size:12px;
     font-weight:800;
     color:rgba(255,255,255,.88);
-    margin-bottom:8px;
+    margin-bottom:6px;
     letter-spacing:.2px;
   }
   .heroBanner{
     color:#fff;
     font-weight:900;
-    font-size:30px;
+    font-size:22px;
     line-height:1.2;
     white-space:nowrap;
   }
@@ -82,7 +82,6 @@
     justify-content:space-between;
   }
 
-  /* 2. 원용도수 / ADD 가로 배열 개선 */
   .controls{
     display:flex;
     flex-direction:column;
@@ -162,44 +161,6 @@
     color:#fff;
   }
 
-  .sliderRow{
-    margin-top:12px;
-    border-top:1px solid var(--line);
-    padding-top:12px;
-  }
-  .sliderHead{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:8px;
-  }
-  .sliderTitle{
-    font-size:15px;
-    font-weight:900;
-    color:var(--text);
-  }
-  .sliderValue{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    min-width:76px;
-    padding:6px 10px;
-    border-radius:999px;
-    background:#eef4ff;
-    color:var(--acuvue-blue);
-    font-weight:900;
-  }
-  input[type="range"]{
-    width:100%;
-  }
-  .sliderNote{
-    margin-top:6px;
-    color:var(--sub);
-    font-weight:700;
-    font-size:13px;
-  }
-
   .grid{
     display:grid;
     grid-template-columns: 1fr 1fr;
@@ -220,8 +181,8 @@
 
   .pupilWrap{
     display:flex;
-    gap:12px;
-    align-items:center;
+    gap:16px;
+    align-items:flex-start;
     justify-content:space-between;
   }
   .eye{
@@ -255,7 +216,7 @@
     flex:1;
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:10px;
     min-width:0;
   }
   .pill{
@@ -273,6 +234,35 @@
   .pill span{
     color:var(--sub);
     font-weight:900;
+  }
+
+  /* 3,4,6. 동공 카드 제목/가이드/우측 드롭다운 */
+  .pupilTitle{
+    margin:0 0 6px;
+    font-size:20px;
+    font-weight:900;
+    color:#102a43;
+    line-height:1.25;
+  }
+  .pupilGuide{
+    margin:0 0 14px;
+    color:var(--sub);
+    font-size:13px;
+    font-weight:700;
+    line-height:1.45;
+  }
+  .pupilControlRow{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:4px;
+  }
+  .pupilField{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    color:var(--sub);
   }
 
   .lensWrap{
@@ -468,6 +458,9 @@
     .field select{
       min-width:96px;
     }
+    .pupilControlRow{
+      gap:12px;
+    }
   }
   @media (max-width: 520px){
     .eye,.lens{ width:190px; height:190px; }
@@ -490,7 +483,7 @@
 
   <div class="hero">
     <div class="heroInner">
-      <div class="heroSub">교육용 시뮬레이션</div>
+      <div class="heroSub">아큐브 시뮬레이션</div>
       <div class="heroBanner">183가지 광학부 디자인</div>
     </div>
   </div>
@@ -500,24 +493,6 @@
 
     <div class="topbar">
       <div class="controls">
-        <div class="controlRow">
-          <div class="field">
-            <label>원용도수
-              <select id="sphere"></select>
-            </label>
-          </div>
-
-          <div class="field">
-            <label>ADD
-              <select id="add">
-                <option value="0">Low</option>
-                <option value="1">Mid</option>
-                <option value="2">High</option>
-              </select>
-            </label>
-          </div>
-        </div>
-
         <div class="toggleGroup">
           <strong>광학부 디자인</strong>
           <div class="radio">
@@ -527,20 +502,13 @@
         </div>
       </div>
     </div>
-
-    <div class="sliderRow">
-      <div class="sliderHead">
-        <div class="sliderTitle">동공 크기 미세 조정</div>
-        <div class="sliderValue" id="pupilAdjustValue">0.0 mm</div>
-      </div>
-      <input type="range" id="pupilAdjust" min="-1.0" max="1.0" step="0.1" value="0">
-      <div class="sliderNote">자동 계산된 동공사이즈 기준으로 미세 조정할수 있습니다.</div>
-    </div>
   </div>
 
   <div class="grid">
     <div class="card">
-      <h3>도수, 나이에 따른 동공 사이즈</h3>
+      <h3 class="pupilTitle">도수, 나이(가입도)에 따른 동공 사이즈</h3>
+      <p class="pupilGuide">원용도수 및 가입도를 선택하여 변화하는 동공 사이즈를 확인해 보세요.</p>
+
       <div class="pupilWrap">
         <div class="eye" aria-label="eye">
           <div class="iris"></div>
@@ -548,6 +516,24 @@
         </div>
 
         <div class="spec">
+          <div class="pupilControlRow">
+            <div class="pupilField">
+              <label>원용도수
+                <select id="sphere"></select>
+              </label>
+            </div>
+
+            <div class="pupilField">
+              <label>가입도
+                <select id="add">
+                  <option value="0">Low</option>
+                  <option value="1">Mid</option>
+                  <option value="2">High</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
           <div class="pill"><span>Estimated Pupil</span> <b id="pupilText">4.0 mm</b></div>
 
           <div class="muted" id="pupilNote">
@@ -644,9 +630,6 @@
   const showPupilBtn = document.getElementById('showPupilBtn');
   const showOpticBtn = document.getElementById('showOpticBtn');
 
-  const pupilAdjust = document.getElementById('pupilAdjust');
-  const pupilAdjustValue = document.getElementById('pupilAdjustValue');
-
   const screen = document.getElementById('screen');
 
   const cam = document.getElementById('cam');
@@ -659,7 +642,7 @@
 
   const standardOpticZone = 5.0;
 
-  let overlayMode = 'both'; // 4. 처음에는 둘 다 노출
+  let overlayMode = 'both';
 
   function getLensPx(){
     const rect = document.querySelector('.lens').getBoundingClientRect();
@@ -689,7 +672,6 @@
   function calcPupilMM(){
     const sphere = parseFloat(sphereSel.value);
     const addIdx = Number(addSel.value);
-    const adjust = parseFloat(pupilAdjust.value || 0);
 
     let pupil = 4.6;
     if(addIdx === 1) pupil -= 0.35;
@@ -702,8 +684,6 @@
     }else if(sphere > 0){
       pupil -= absS * step;
     }
-
-    pupil += adjust;
 
     pupil = Math.max(2.6, Math.min(6.6, pupil));
     return pupil;
@@ -845,8 +825,6 @@
     const ozMM = calcOpticZoneMM(mode, pupilMM);
     opticText.textContent = `${ozMM.toFixed(1)} mm`;
 
-    pupilAdjustValue.textContent = `${parseFloat(pupilAdjust.value).toFixed(1)} mm`;
-
     applyLensRings(ozMM);
     applyOverlays(pupilMM, ozMM);
     applyOverlayVisibility();
@@ -856,7 +834,6 @@
   sphereSel.addEventListener('change', updateAll);
   addSel.addEventListener('change', updateAll);
   designRadios.forEach(r=>r.addEventListener('change', updateAll));
-  pupilAdjust.addEventListener('input', updateAll);
   window.addEventListener('resize', ()=>{ updateAll(); });
 
   showBothBtn.addEventListener('click', ()=>{
