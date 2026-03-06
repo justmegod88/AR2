@@ -61,105 +61,6 @@
     white-space:nowrap;
   }
 
-  .setupCard{
-    border:1px solid var(--line);
-    background:var(--card);
-    border-radius:16px;
-    padding:12px;
-  }
-  .setupTitle{
-    margin:0 0 10px;
-    font-size:18px;
-    font-weight:900;
-    color:#14396b;
-  }
-
-  .topbar{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    justify-content:space-between;
-  }
-
-  .controls{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    width:100%;
-  }
-  .controlRow{
-    display:flex;
-    gap:16px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  label{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-weight:800;
-    color:var(--sub);
-    white-space:nowrap;
-  }
-  .field{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    min-width:0;
-  }
-  select{
-    border:1px solid var(--line);
-    padding:8px 10px;
-    border-radius:10px;
-    background:#fff;
-    font-weight:800;
-    color:var(--text);
-    min-width:110px;
-  }
-
-  .toggleGroup{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    padding:10px 12px;
-    border:1px solid var(--line);
-    border-radius:16px;
-    background:#fafbfc;
-    width:100%;
-  }
-  .toggleGroup strong{
-    color:var(--sub);
-    font-size:13px;
-    font-weight:900;
-    min-width:86px;
-  }
-  .radio{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
-  .radio label{
-    font-weight:900;
-    color:var(--text);
-    gap:6px;
-  }
-
-  .btn{
-    border:1px solid var(--line);
-    background:#fff;
-    border-radius:12px;
-    padding:10px 12px;
-    font-weight:900;
-    cursor:pointer;
-    color:var(--text);
-  }
-  .btn.primary{
-    background:var(--acuvue-blue);
-    border-color:var(--acuvue-blue);
-    color:#fff;
-  }
-
   .grid{
     display:grid;
     grid-template-columns: 1fr 1fr;
@@ -263,7 +164,6 @@
     text-align:right;
   }
 
-  /* 슬라이더 UI */
   .sliderBlock{
     width:100%;
     display:flex;
@@ -296,6 +196,41 @@
     margin:0;
   }
 
+  /* 4. lens card 내부 on/off */
+  .lensToggleWrap{
+    margin:-2px 0 12px;
+  }
+  .toggleGroup{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:#fafbfc;
+    width:100%;
+  }
+  .toggleGroup strong{
+    color:var(--sub);
+    font-size:13px;
+    font-weight:900;
+    min-width:86px;
+  }
+  .radio{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .radio label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:900;
+    color:var(--text);
+    white-space:nowrap;
+  }
+
   .lensWrap{
     display:flex;
     flex-direction:column;
@@ -303,6 +238,16 @@
     align-items:center;
     justify-content:flex-start;
   }
+
+  .lensStage{
+    width:100%;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:240px;
+  }
+
   .lens{
     width:220px;
     height:220px;
@@ -312,6 +257,18 @@
     position:relative;
     overflow:hidden;
     flex:0 0 auto;
+  }
+
+  /* 2. mismatch highlight */
+  .mismatchHighlight{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .2s ease, width .35s ease, height .35s ease, background .35s ease;
   }
 
   .ozRing{
@@ -346,6 +303,38 @@
   .ring.mid { border-color: rgba(0,160,120,.50); }
   .ring.dist{ border-color: rgba(0,94,184,.45); }
 
+  /* 3. 세로 범례 */
+  .miniLegend{
+    position:absolute;
+    right:4px;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    align-items:flex-start;
+  }
+  .miniLegendItem{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:10px;
+    font-weight:800;
+    color:var(--sub);
+    white-space:nowrap;
+    opacity:.95;
+  }
+  .miniLegendDot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    flex:0 0 auto;
+  }
+  .miniLegendDot.d{ background:rgba(0,94,184,.85); }
+  .miniLegendDot.m{ background:rgba(0,160,120,.85); }
+  .miniLegendDot.n{ background:rgba(255,140,0,.85); }
+  .miniLegendDot.b{ background:rgba(255,255,0,.72); border:1px solid rgba(180,160,0,.6); }
+
   .legend{
     width:100%;
     display:flex;
@@ -354,6 +343,32 @@
     min-width:0;
     align-items:flex-start;
   }
+
+  /* 1. 버튼 가로 비율 */
+  .toggleMini{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:8px;
+    width:100%;
+  }
+  .miniBtn{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:12px;
+    padding:8px 10px;
+    font-weight:900;
+    color:var(--text);
+    cursor:pointer;
+    width:100%;
+    text-align:center;
+    white-space:nowrap;
+  }
+  .miniBtn.active{
+    background:#eef4ff;
+    border-color:#b7cff4;
+    color:var(--acuvue-blue);
+  }
+
   .tagRow{
     display:flex; gap:8px; flex-wrap:wrap;
   }
@@ -375,24 +390,25 @@
   .dot.m{ background:rgba(0,160,120,.85); }
   .dot.d{ background:rgba(0,94,184,.85); }
 
-  .toggleMini{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
+  /* 5. 예상 광학부 좌측/우측 정렬 */
+  .opticInfoRow{
+    width:100%;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    align-items:center;
+    gap:14px;
   }
-  .miniBtn{
-    border:1px solid var(--line);
-    background:#fff;
-    border-radius:12px;
-    padding:8px 12px;
+  .opticInfoLabel{
+    font-size:18px;
+    font-weight:900;
+    color:var(--sub);
+  }
+  .opticInfoValue{
+    font-size:18px;
     font-weight:900;
     color:var(--text);
-    cursor:pointer;
-  }
-  .miniBtn.active{
-    background:#eef4ff;
-    border-color:#b7cff4;
-    color:var(--acuvue-blue);
+    min-width:100px;
+    text-align:right;
   }
 
   .visionCard{
@@ -407,6 +423,21 @@
     align-items:flex-start;
     gap:12px;
     margin-bottom:10px;
+  }
+
+  .btn{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:12px;
+    padding:10px 12px;
+    font-weight:900;
+    cursor:pointer;
+    color:var(--text);
+  }
+  .btn.primary{
+    background:var(--acuvue-blue);
+    border-color:var(--acuvue-blue);
+    color:#fff;
   }
 
   .screen{
@@ -480,29 +511,15 @@
     }
   }
   @media (max-width: 640px){
-    .topbar{
-      flex-direction:column;
-      align-items:stretch;
-    }
-    .controlRow{
-      gap:12px;
-      align-items:center;
-    }
-    .field{
-      flex:1 1 0;
-      min-width:140px;
-    }
-    .field label{
-      width:100%;
-      justify-content:space-between;
-    }
-    .field select{
-      min-width:96px;
-    }
     .pupilInfoLabel,
     .pupilInfoValue,
-    .sliderValue{
+    .sliderValue,
+    .opticInfoLabel,
+    .opticInfoValue{
       font-size:16px;
+    }
+    .miniLegend{
+      right:0;
     }
   }
   @media (max-width: 520px){
@@ -512,6 +529,13 @@
     .pupilTitle{ font-size:22px; }
     .pupilInfoRow{
       grid-template-columns: 1fr auto;
+    }
+    .miniBtn{
+      font-size:14px;
+      padding:8px 6px;
+    }
+    .miniLegend{
+      right:-2px;
     }
   }
 </style>
@@ -531,22 +555,6 @@
     <div class="heroInner">
       <div class="heroSub">아큐브 시뮬레이션</div>
       <div class="heroBanner">183가지 광학부 디자인</div>
-    </div>
-  </div>
-
-  <div class="setupCard">
-    <div class="setupTitle">조건 설정</div>
-
-    <div class="topbar">
-      <div class="controls">
-        <div class="toggleGroup">
-          <strong>광학부 디자인</strong>
-          <div class="radio">
-            <label><input type="radio" name="design" value="standard" checked> OFF(1가지 광학부)</label>
-            <label><input type="radio" name="design" value="183"> ON(183가지 동공 사이즈별 광학부)</label>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -600,14 +608,35 @@
 
     <div class="card">
       <h3>동공 사이즈와 광학부 사이즈에 따른 시야</h3>
-      <div class="lensWrap">
-        <div class="lens" aria-label="lens">
-          <div class="ozRing" id="ozRing"></div>
-          <div class="pupilOverlay" id="pupilOverlay"></div>
 
-          <div class="ring dist" id="ringDist"></div>
-          <div class="ring mid"  id="ringMid"></div>
-          <div class="ring near" id="ringNear"></div>
+      <div class="lensToggleWrap">
+        <div class="toggleGroup">
+          <strong>광학부 디자인</strong>
+          <div class="radio">
+            <label><input type="radio" name="design" value="standard" checked> OFF(1가지 광학부)</label>
+            <label><input type="radio" name="design" value="183"> ON(183가지 동공 사이즈별 광학부)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="lensWrap">
+        <div class="lensStage">
+          <div class="lens" aria-label="lens">
+            <div class="mismatchHighlight" id="mismatchHighlight"></div>
+            <div class="ozRing" id="ozRing"></div>
+            <div class="pupilOverlay" id="pupilOverlay"></div>
+
+            <div class="ring dist" id="ringDist"></div>
+            <div class="ring mid"  id="ringMid"></div>
+            <div class="ring near" id="ringNear"></div>
+          </div>
+
+          <div class="miniLegend">
+            <div class="miniLegendItem"><span class="miniLegendDot d"></span><span>원</span></div>
+            <div class="miniLegendItem"><span class="miniLegendDot m"></span><span>중</span></div>
+            <div class="miniLegendItem"><span class="miniLegendDot n"></span><span>근</span></div>
+            <div class="miniLegendItem"><span class="miniLegendDot b"></span><span>흐림</span></div>
+          </div>
         </div>
 
         <div class="legend">
@@ -623,7 +652,10 @@
             <div class="tag"><span class="dot n"></span> 근</div>
           </div>
 
-          <div class="pill"><span>Estimated Optic Zone</span> <b id="opticText">5.0 mm</b></div>
+          <div class="opticInfoRow">
+            <div class="opticInfoLabel">예상 광학부 사이즈</div>
+            <div class="opticInfoValue" id="opticText">5.0 mm</div>
+          </div>
         </div>
       </div>
     </div>
@@ -685,6 +717,7 @@
 
   const ozRing = document.getElementById('ozRing');
   const pupilOverlay = document.getElementById('pupilOverlay');
+  const mismatchHighlight = document.getElementById('mismatchHighlight');
 
   const showBothBtn = document.getElementById('showBothBtn');
   const showPupilBtn = document.getElementById('showPupilBtn');
@@ -789,6 +822,26 @@
 
     ozRing.style.width = `${ozPx}px`;
     ozRing.style.height = `${ozPx}px`;
+
+    const maxPx = Math.max(pupilPX, ozPx);
+    const minPx = Math.min(pupilPX, ozPx);
+
+    if (Math.abs(pupilPX - ozPx) < 2) {
+      mismatchHighlight.style.opacity = '0';
+      mismatchHighlight.style.width = '0px';
+      mismatchHighlight.style.height = '0px';
+      mismatchHighlight.style.background = 'none';
+      return;
+    }
+
+    const innerPct = (minPx / maxPx) * 50;
+    mismatchHighlight.style.width = `${maxPx}px`;
+    mismatchHighlight.style.height = `${maxPx}px`;
+    mismatchHighlight.style.background =
+      `radial-gradient(circle,
+        transparent 0 ${innerPct}%,
+        rgba(255,255,0,.36) ${innerPct}% 100%)`;
+    mismatchHighlight.style.opacity = '1';
   }
 
   function applyOverlayVisibility(){
