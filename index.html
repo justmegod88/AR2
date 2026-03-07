@@ -197,6 +197,7 @@
   }
 
   .lensToggleWrap{
+    width:100%;
     margin:-2px 0 12px;
   }
   .toggleGroup{
@@ -231,6 +232,7 @@
   }
 
   .lensWrap{
+    width:100%;
     display:flex;
     flex-direction:column;
     gap:14px;
@@ -619,11 +621,6 @@
             <button class="miniBtn" id="showPupilBtn" type="button">동공</button>
             <button class="miniBtn" id="showOpticBtn" type="button">렌즈 광학부</button>
           </div>
-
-          <div class="opticInfoRow">
-            <div class="opticInfoLabel">예상 광학부 사이즈</div>
-            <div class="opticInfoValue" id="opticText">6.0 mm</div>
-          </div>
         </div>
       </div>
     </div>
@@ -677,7 +674,6 @@
 
   const pupilEl = document.getElementById('pupil');
   const pupilText = document.getElementById('pupilText');
-  const opticText = document.getElementById('opticText');
 
   const ringNear = document.getElementById('ringNear');
   const ringMid  = document.getElementById('ringMid');
@@ -701,7 +697,7 @@
   const explainTags = document.getElementById('explainTags');
   const explainConclusion = document.getElementById('explainConclusion');
 
-  const standardOpticZone = 6.0;
+  const standardOpticZone = 4.5;
   let overlayMode = 'both';
 
   function getSphereValue(){
@@ -787,20 +783,21 @@
 
     const outerPx = Math.max(pupilPX, ozPx);
     const innerPx = Math.min(pupilPX, ozPx);
-    const gapRatio = innerPx / outerPx;
-    const innerStop = Math.max(0, Math.min(49.5, gapRatio * 50));
 
     mismatchHighlight.style.width = `${outerPx}px`;
     mismatchHighlight.style.height = `${outerPx}px`;
-    mismatchHighlight.style.background =
-      `radial-gradient(circle,
-        transparent 0 ${innerStop}%,
-        rgba(255,255,0,.34) ${innerStop}% 100%)`;
 
     if (overlayMode === 'both' && Math.abs(pupilPX - ozPx) >= 2) {
+      const ringThickness = Math.max(2, (outerPx - innerPx) / 2);
+      mismatchHighlight.style.background =
+        `radial-gradient(circle,
+          transparent 0 calc(50% - ${ringThickness}px),
+          rgba(255,255,0,.34) calc(50% - ${ringThickness}px) 50%,
+          transparent 50% 100%)`;
       mismatchHighlight.style.opacity = '1';
     } else {
       mismatchHighlight.style.opacity = '0';
+      mismatchHighlight.style.background = 'none';
     }
   }
 
@@ -905,7 +902,6 @@
     pupilText.textContent = `${pupilMM.toFixed(1)} mm`;
 
     const ozMM = calcOpticZoneMM(mode, pupilMM);
-    opticText.textContent = `${ozMM.toFixed(1)} mm`;
 
     applyLensRings(ozMM);
     applyOverlays(pupilMM, ozMM);
@@ -980,4 +976,4 @@
   updateAll();
 </script>
 </body>
-</html>"
+</html>
