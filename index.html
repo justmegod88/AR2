@@ -29,14 +29,26 @@
     margin:0 auto;
     display:flex;
     flex-direction:column;
+    align-items:stretch;
     gap:12px;
   }
 
-  /* 1) 전체 카드 폭 통일 */
+  /* 1) 상단 타이틀 / 동공 카드 / 광학부 카드 / 시뮬레이션 카드 폭 완전 통일 */
+  .wrap > .hero,
+  .wrap > .grid,
+  .wrap > .visionCard,
+  .wrap > .pageFootnote{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    align-self:stretch;
+  }
+
   .hero,
   .card,
   .visionCard{
     width:100%;
+    max-width:100%;
     margin:0;
   }
 
@@ -72,16 +84,15 @@
   }
 
   .grid{
-    display:grid;
-    grid-template-columns:1fr;
+    display:flex;
+    flex-direction:column;
     gap:12px;
-    width:100%;
   }
 
   .card{
     border:1px solid var(--line);
     border-radius:16px;
-    padding:12px;
+    padding:16px;
     background:#fff;
   }
   .card h3{
@@ -271,7 +282,7 @@
     overflow:hidden;
   }
 
-  /* 2) 노란 영역 = 점선 동공 경계와 파란 광학부 경계 사이 갭만 */
+  /* 2) 노란 영역은 점선 동공 경계와 파란 광학부 경계 사이 갭만 */
   .mismatchHighlight{
     position:absolute;
     left:50%;
@@ -385,7 +396,7 @@
   .visionCard{
     border:1px solid var(--line);
     border-radius:16px;
-    padding:12px;
+    padding:16px;
     background:#fff;
   }
   .visionHead{
@@ -464,6 +475,7 @@
   .explain strong{ color:var(--text); }
 
   .pageFootnote{
+    width:100%;
     color:var(--sub);
     font-weight:800;
     font-size:13px;
@@ -748,12 +760,13 @@
     mismatchHighlight.style.height = `${outerPx}px`;
 
     if (overlayMode === 'both' && Math.abs(pupilPX - ozPx) >= 2) {
-      const innerStop = (innerPx / outerPx) * 50;
+      const innerRadius = innerPx / 2;
+      const outerRadius = outerPx / 2;
       mismatchHighlight.style.background =
         `radial-gradient(circle,
-          transparent 0 ${innerStop}%,
-          rgba(255,255,0,.34) ${innerStop}% 50%,
-          transparent 50% 100%)`;
+          transparent 0 ${Math.max(0, innerRadius - 1)}px,
+          rgba(255,255,0,.34) ${innerRadius}px ${outerRadius}px,
+          transparent ${outerRadius + 1}px 100%)`;
       mismatchHighlight.style.opacity = '1';
     } else {
       mismatchHighlight.style.opacity = '0';
