@@ -196,7 +196,6 @@
     margin:0;
   }
 
-  /* 4. lens card 내부 on/off */
   .lensToggleWrap{
     margin:-2px 0 12px;
   }
@@ -259,7 +258,6 @@
     flex:0 0 auto;
   }
 
-  /* 2. mismatch highlight */
   .mismatchHighlight{
     position:absolute;
     left:50%;
@@ -303,7 +301,6 @@
   .ring.mid { border-color: rgba(0,160,120,.50); }
   .ring.dist{ border-color: rgba(0,94,184,.45); }
 
-  /* 3. 세로 범례 */
   .miniLegend{
     position:absolute;
     right:4px;
@@ -344,7 +341,6 @@
     align-items:flex-start;
   }
 
-  /* 1. 버튼 가로 비율 */
   .toggleMini{
     display:grid;
     grid-template-columns: repeat(3, 1fr);
@@ -369,28 +365,6 @@
     color:var(--acuvue-blue);
   }
 
-  .tagRow{
-    display:flex; gap:8px; flex-wrap:wrap;
-  }
-  .tag{
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:8px 10px;
-    background:#fff;
-    font-weight:900;
-  }
-  .dot{
-    width:10px;height:10px;border-radius:50%;
-    background:#ccc;
-  }
-  .dot.n{ background:rgba(255,140,0,.85); }
-  .dot.m{ background:rgba(0,160,120,.85); }
-  .dot.d{ background:rgba(0,94,184,.85); }
-
-  /* 5. 예상 광학부 좌측/우측 정렬 */
   .opticInfoRow{
     width:100%;
     display:grid;
@@ -578,9 +552,9 @@
               </div>
               <input id="sphereSlider" type="range" min="-9" max="6" step="1" value="-4">
               <div class="sliderScale">
-                <span>+6.00</span>
-                <span>0.00</span>
                 <span>-9.00</span>
+                <span>0.00</span>
+                <span>+6.00</span>
               </div>
             </div>
 
@@ -646,15 +620,9 @@
             <button class="miniBtn" id="showOpticBtn" type="button">렌즈 광학부</button>
           </div>
 
-          <div class="tagRow">
-            <div class="tag"><span class="dot d"></span> 원</div>
-            <div class="tag"><span class="dot m"></span> 중</div>
-            <div class="tag"><span class="dot n"></span> 근</div>
-          </div>
-
           <div class="opticInfoRow">
             <div class="opticInfoLabel">예상 광학부 사이즈</div>
-            <div class="opticInfoValue" id="opticText">5.0 mm</div>
+            <div class="opticInfoValue" id="opticText">6.0 mm</div>
           </div>
         </div>
       </div>
@@ -733,18 +701,8 @@
   const explainTags = document.getElementById('explainTags');
   const explainConclusion = document.getElementById('explainConclusion');
 
-  const standardOpticZone = 5.0;
-
+  const standardOpticZone = 6.0;
   let overlayMode = 'both';
-
-  function getLensPx(){
-    const rect = document.querySelector('.lens').getBoundingClientRect();
-    return Math.min(rect.width, rect.height);
-  }
-  function mmToLensPx(mm){
-    const lensPx = getLensPx();
-    return (mm / 14.5) * lensPx;
-  }
 
   function getSphereValue(){
     return Number(sphereSlider.value);
@@ -793,13 +751,17 @@
     return Math.round(minPX + (maxPX-minPX)*t);
   }
 
+  function mmToOverlayPx(mm){
+    return mmToEyePupilPx(mm);
+  }
+
   function calcOpticZoneMM(mode, pupilMM){
     if(mode === 'standard') return standardOpticZone;
-    return Math.max(3.0, Math.min(6.0, pupilMM));
+    return Math.max(3.0, Math.min(6.0, pupilMM + 0.1));
   }
 
   function applyLensRings(ozMM){
-    const ozPx = mmToLensPx(ozMM);
+    const ozPx = mmToOverlayPx(ozMM);
 
     const dist = ozPx * 0.95;
     const mid  = ozPx * 0.70;
@@ -815,7 +777,7 @@
 
   function applyOverlays(pupilMM, ozMM){
     const pupilPX = mmToEyePupilPx(pupilMM);
-    const ozPx = mmToLensPx(ozMM);
+    const ozPx = mmToOverlayPx(ozMM);
 
     pupilOverlay.style.width = `${pupilPX}px`;
     pupilOverlay.style.height = `${pupilPX}px`;
@@ -823,25 +785,23 @@
     ozRing.style.width = `${ozPx}px`;
     ozRing.style.height = `${ozPx}px`;
 
-    const maxPx = Math.max(pupilPX, ozPx);
-    const minPx = Math.min(pupilPX, ozPx);
+    const outerPx = Math.max(pupilPX, ozPx);
+    const innerPx = Math.min(pupilPX, ozPx);
+    const gapRatio = innerPx / outerPx;
+    const innerStop = Math.max(0, Math.min(49.5, gapRatio * 50));
 
-    if (Math.abs(pupilPX - ozPx) < 2) {
-      mismatchHighlight.style.opacity = '0';
-      mismatchHighlight.style.width = '0px';
-      mismatchHighlight.style.height = '0px';
-      mismatchHighlight.style.background = 'none';
-      return;
-    }
-
-    const innerPct = (minPx / maxPx) * 50;
-    mismatchHighlight.style.width = `${maxPx}px`;
-    mismatchHighlight.style.height = `${maxPx}px`;
+    mismatchHighlight.style.width = `${outerPx}px`;
+    mismatchHighlight.style.height = `${outerPx}px`;
     mismatchHighlight.style.background =
       `radial-gradient(circle,
-        transparent 0 ${innerPct}%,
-        rgba(255,255,0,.36) ${innerPct}% 100%)`;
-    mismatchHighlight.style.opacity = '1';
+        transparent 0 ${innerStop}%,
+        rgba(255,255,0,.34) ${innerStop}% 100%)`;
+
+    if (overlayMode === 'both' && Math.abs(pupilPX - ozPx) >= 2) {
+      mismatchHighlight.style.opacity = '1';
+    } else {
+      mismatchHighlight.style.opacity = '0';
+    }
   }
 
   function applyOverlayVisibility(){
@@ -857,12 +817,14 @@
       ringDist.style.opacity = '0';
       ringMid.style.opacity = '0';
       ringNear.style.opacity = '0';
+      mismatchHighlight.style.opacity = '0';
     }else if(overlayMode === 'optic'){
       pupilOverlay.style.opacity = '0';
       ozRing.style.opacity = '1';
       ringDist.style.opacity = '1';
       ringMid.style.opacity = '1';
       ringNear.style.opacity = '1';
+      mismatchHighlight.style.opacity = '0';
     }
 
     showBothBtn.classList.toggle('active', overlayMode === 'both');
@@ -959,6 +921,7 @@
   showBothBtn.addEventListener('click', ()=>{
     overlayMode = 'both';
     applyOverlayVisibility();
+    updateAll();
   });
   showPupilBtn.addEventListener('click', ()=>{
     overlayMode = 'pupil';
@@ -1017,4 +980,4 @@
   updateAll();
 </script>
 </body>
-</html>
+</html>"
