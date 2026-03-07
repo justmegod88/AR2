@@ -17,18 +17,27 @@
   *{box-sizing:border-box}
   body{
     margin:0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     background:var(--bg);
     color:var(--text);
     padding:18px;
   }
 
   .wrap{
+    width:100%;
     max-width:1100px;
     margin:0 auto;
     display:flex;
     flex-direction:column;
     gap:12px;
+  }
+
+  /* 1) 전체 카드 폭 통일 */
+  .hero,
+  .card,
+  .visionCard{
+    width:100%;
+    margin:0;
   }
 
   .hero{
@@ -39,6 +48,7 @@
     box-shadow:0 6px 20px rgba(16,42,67,.05);
   }
   .heroInner{
+    width:100%;
     border-radius:22px;
     padding:24px 20px;
     background:
@@ -63,9 +73,11 @@
 
   .grid{
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:1fr;
     gap:12px;
+    width:100%;
   }
+
   .card{
     border:1px solid var(--line);
     border-radius:16px;
@@ -77,52 +89,55 @@
     font-size:15px;
     font-weight:900;
   }
-  .muted{ color:var(--sub); font-weight:800; font-size:13px; line-height:1.45; }
+  .muted{
+    color:var(--sub);
+    font-weight:800;
+    font-size:13px;
+    line-height:1.45;
+  }
 
   .pupilWrap{
     display:flex;
     flex-direction:column;
     gap:16px;
     align-items:flex-start;
-    justify-content:flex-start;
   }
   .eye{
     width:220px;
     height:220px;
     border-radius:50%;
-    background: radial-gradient(circle at 40% 35%, #ffffff 0%, #e9eff5 45%, #d7e2ee 100%);
+    background:radial-gradient(circle at 40% 35%, #ffffff 0%, #e9eff5 45%, #d7e2ee 100%);
     border:1px solid var(--line);
     position:relative;
     overflow:hidden;
-    flex:0 0 auto;
     align-self:center;
   }
   .iris{
     position:absolute;
     inset:18%;
     border-radius:50%;
-    background: radial-gradient(circle at 30% 30%, #8fb3d9 0%, #2b6cb0 35%, #1a365d 100%);
-    box-shadow: inset 0 0 25px rgba(0,0,0,.25);
+    background:radial-gradient(circle at 30% 30%, #8fb3d9 0%, #2b6cb0 35%, #1a365d 100%);
+    box-shadow:inset 0 0 25px rgba(0,0,0,.25);
   }
   .pupil{
     position:absolute;
-    left:50%; top:50%;
-    width:70px; height:70px;
+    left:50%;
+    top:50%;
+    width:70px;
+    height:70px;
     transform:translate(-50%,-50%);
     border-radius:50%;
     background:#06121f;
-    box-shadow: 0 0 0 10px rgba(255,255,255,.08);
-    transition: width .35s ease, height .35s ease;
+    box-shadow:0 0 0 10px rgba(255,255,255,.08);
+    transition:width .35s ease,height .35s ease;
   }
+
   .spec{
     width:100%;
     display:flex;
     flex-direction:column;
     gap:12px;
-    min-width:0;
-    align-items:stretch;
   }
-
   .pupilTitle{
     margin:0 0 8px;
     font-size:24px;
@@ -147,7 +162,7 @@
   .pupilInfoRow{
     width:100%;
     display:grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns:1fr auto;
     align-items:center;
     gap:14px;
   }
@@ -172,7 +187,7 @@
   }
   .sliderTop{
     display:grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns:1fr auto;
     gap:14px;
     align-items:center;
   }
@@ -237,9 +252,7 @@
     flex-direction:column;
     gap:14px;
     align-items:center;
-    justify-content:flex-start;
   }
-
   .lensStage{
     width:100%;
     position:relative;
@@ -248,18 +261,17 @@
     align-items:center;
     min-height:240px;
   }
-
   .lens{
     width:220px;
     height:220px;
     border-radius:50%;
     border:1px solid var(--line);
-    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.4) 40%, rgba(250,252,255,.15) 70%, rgba(240,246,255,.1));
+    background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.95), rgba(255,255,255,.4) 40%, rgba(250,252,255,.15) 70%, rgba(240,246,255,.1));
     position:relative;
     overflow:hidden;
-    flex:0 0 auto;
   }
 
+  /* 2) 노란 영역 = 점선 동공 경계와 파란 광학부 경계 사이 갭만 */
   .mismatchHighlight{
     position:absolute;
     left:50%;
@@ -268,40 +280,45 @@
     border-radius:50%;
     pointer-events:none;
     opacity:0;
-    transition:opacity .2s ease, width .35s ease, height .35s ease, background .35s ease;
+    transition:opacity .2s ease,width .35s ease,height .35s ease,background .35s ease;
   }
 
   .ozRing{
     position:absolute;
-    left:50%; top:50%;
+    left:50%;
+    top:50%;
     transform:translate(-50%,-50%);
     border-radius:50%;
     border:2px solid rgba(72,101,129,.65);
-    width:0; height:0;
-    transition: width .35s ease, height .35s ease, opacity .2s ease;
+    width:0;
+    height:0;
+    transition:width .35s ease,height .35s ease,opacity .2s ease;
   }
   .pupilOverlay{
     position:absolute;
-    left:50%; top:50%;
+    left:50%;
+    top:50%;
     transform:translate(-50%,-50%);
     border-radius:50%;
     border:2px dashed rgba(72,101,129,.65);
-    width:0; height:0;
-    transition: width .35s ease, height .35s ease, opacity .2s ease;
+    width:0;
+    height:0;
+    transition:width .35s ease,height .35s ease,opacity .2s ease;
   }
 
   .ring{
     position:absolute;
-    left:50%; top:50%;
+    left:50%;
+    top:50%;
     transform:translate(-50%,-50%);
     border-radius:50%;
     border:2px solid rgba(0,94,184,.35);
-    filter: drop-shadow(0 0 8px rgba(0,94,184,.12));
-    transition: width .35s ease, height .35s ease, opacity .2s ease;
+    filter:drop-shadow(0 0 8px rgba(0,94,184,.12));
+    transition:width .35s ease,height .35s ease,opacity .2s ease;
   }
-  .ring.near{ border-color: rgba(255,140,0,.55); }
-  .ring.mid { border-color: rgba(0,160,120,.50); }
-  .ring.dist{ border-color: rgba(0,94,184,.45); }
+  .ring.near{ border-color:rgba(255,140,0,.55); }
+  .ring.mid{ border-color:rgba(0,160,120,.50); }
+  .ring.dist{ border-color:rgba(0,94,184,.45); }
 
   .miniLegend{
     position:absolute;
@@ -339,13 +356,11 @@
     display:flex;
     flex-direction:column;
     gap:10px;
-    min-width:0;
     align-items:flex-start;
   }
-
   .toggleMini{
     display:grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:repeat(3, 1fr);
     gap:8px;
     width:100%;
   }
@@ -367,26 +382,6 @@
     color:var(--acuvue-blue);
   }
 
-  .opticInfoRow{
-    width:100%;
-    display:grid;
-    grid-template-columns: 1fr auto;
-    align-items:center;
-    gap:14px;
-  }
-  .opticInfoLabel{
-    font-size:18px;
-    font-weight:900;
-    color:var(--sub);
-  }
-  .opticInfoValue{
-    font-size:18px;
-    font-weight:900;
-    color:var(--text);
-    min-width:100px;
-    text-align:right;
-  }
-
   .visionCard{
     border:1px solid var(--line);
     border-radius:16px;
@@ -400,7 +395,6 @@
     gap:12px;
     margin-bottom:10px;
   }
-
   .btn{
     border:1px solid var(--line);
     background:#fff;
@@ -424,7 +418,7 @@
     position:relative;
     min-height:260px;
   }
-  .screen video, .screen img{
+  .screen video,.screen img{
     width:100%;
     height:100%;
     object-fit:cover;
@@ -433,9 +427,9 @@
 
   .layer{ position:absolute; inset:0; }
   .layer.blurred{
-    filter: blur(8px) contrast(1.05);
+    filter:blur(8px) contrast(1.05);
     opacity:0;
-    transition: opacity .2s ease;
+    transition:opacity .2s ease;
   }
 
   .mask-center .layer.blurred{
@@ -452,7 +446,7 @@
 
   .visionGrid{
     display:grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns:1fr 320px;
     gap:12px;
     align-items:stretch;
   }
@@ -477,42 +471,32 @@
     padding:2px 4px 12px;
   }
 
-  @media (max-width: 980px){
+  @media (max-width:980px){
     body{ padding:12px; }
-    .grid{ grid-template-columns: 1fr; }
-    .visionGrid{ grid-template-columns: 1fr; }
     .heroBanner{
       font-size:24px;
       white-space:normal;
     }
+    .visionGrid{ grid-template-columns:1fr; }
   }
-  @media (max-width: 640px){
+  @media (max-width:640px){
     .pupilInfoLabel,
     .pupilInfoValue,
-    .sliderValue,
-    .opticInfoLabel,
-    .opticInfoValue{
+    .sliderValue{
       font-size:16px;
     }
-    .miniLegend{
-      right:0;
-    }
+    .miniLegend{ right:0; }
   }
-  @media (max-width: 520px){
+  @media (max-width:520px){
     .eye,.lens{ width:190px; height:190px; }
     .btn{ padding:10px 12px; }
     .heroBanner{ font-size:20px; }
     .pupilTitle{ font-size:22px; }
-    .pupilInfoRow{
-      grid-template-columns: 1fr auto;
-    }
     .miniBtn{
       font-size:14px;
       padding:8px 6px;
     }
-    .miniLegend{
-      right:-2px;
-    }
+    .miniLegend{ right:-2px; }
   }
 </style>
 </head>
@@ -601,9 +585,8 @@
             <div class="mismatchHighlight" id="mismatchHighlight"></div>
             <div class="ozRing" id="ozRing"></div>
             <div class="pupilOverlay" id="pupilOverlay"></div>
-
             <div class="ring dist" id="ringDist"></div>
-            <div class="ring mid"  id="ringMid"></div>
+            <div class="ring mid" id="ringMid"></div>
             <div class="ring near" id="ringNear"></div>
           </div>
 
@@ -664,12 +647,10 @@
 
 <script>
   const camBtn = document.getElementById('camBtn');
-
   const sphereSlider = document.getElementById('sphereSlider');
   const addSlider = document.getElementById('addSlider');
   const sphereValue = document.getElementById('sphereValue');
   const addValue = document.getElementById('addValue');
-
   const designRadios = document.querySelectorAll('input[name="design"]');
 
   const pupilEl = document.getElementById('pupil');
@@ -688,7 +669,6 @@
   const showOpticBtn = document.getElementById('showOpticBtn');
 
   const screen = document.getElementById('screen');
-
   const cam = document.getElementById('cam');
   const camBlur = document.getElementById('camBlur');
   const fallbackImg = document.getElementById('fallbackImg');
@@ -700,22 +680,10 @@
   const standardOpticZone = 4.5;
   let overlayMode = 'both';
 
-  function getSphereValue(){
-    return Number(sphereSlider.value);
-  }
-
-  function getAddIndex(){
-    return Number(addSlider.value);
-  }
-
-  function formatSphere(v){
-    return `${v > 0 ? '+' : ''}${v.toFixed(2)}`;
-  }
-
-  function formatAdd(idx){
-    return ['Low','Mid','High'][idx];
-  }
-
+  function getSphereValue(){ return Number(sphereSlider.value); }
+  function getAddIndex(){ return Number(addSlider.value); }
+  function formatSphere(v){ return `${v > 0 ? '+' : ''}${v.toFixed(2)}`; }
+  function formatAdd(idx){ return ['Low','Mid','High'][idx]; }
   function getDesignMode(){
     return [...designRadios].find(r=>r.checked)?.value || 'standard';
   }
@@ -730,19 +698,15 @@
 
     const absS = Math.abs(sphere);
     const step = 0.08;
-    if(sphere < 0){
-      pupil += absS * step;
-    }else if(sphere > 0){
-      pupil -= absS * step;
-    }
+    if(sphere < 0) pupil += absS * step;
+    else if(sphere > 0) pupil -= absS * step;
 
-    pupil = Math.max(2.6, Math.min(6.6, pupil));
-    return pupil;
+    return Math.max(2.6, Math.min(6.6, pupil));
   }
 
   function mmToEyePupilPx(mm){
     const minMM = 2.6, maxMM = 6.6;
-    const minPX = 44,  maxPX = 110;
+    const minPX = 44, maxPX = 110;
     const t = Math.max(0, Math.min(1, (mm - minMM)/(maxMM-minMM)));
     return Math.round(minPX + (maxPX-minPX)*t);
   }
@@ -758,15 +722,12 @@
 
   function applyLensRings(ozMM){
     const ozPx = mmToOverlayPx(ozMM);
-
-    const dist = ozPx * 0.95;
-    const mid  = ozPx * 0.70;
-    const near = ozPx * 0.45;
-
-    ringDist.style.width = `${dist}px`; ringDist.style.height = `${dist}px`;
-    ringMid.style.width  = `${mid}px`;  ringMid.style.height  = `${mid}px`;
-    ringNear.style.width = `${near}px`; ringNear.style.height = `${near}px`;
-
+    ringDist.style.width = `${ozPx * 0.95}px`;
+    ringDist.style.height = `${ozPx * 0.95}px`;
+    ringMid.style.width = `${ozPx * 0.70}px`;
+    ringMid.style.height = `${ozPx * 0.70}px`;
+    ringNear.style.width = `${ozPx * 0.45}px`;
+    ringNear.style.height = `${ozPx * 0.45}px`;
     ozRing.style.width = `${ozPx}px`;
     ozRing.style.height = `${ozPx}px`;
   }
@@ -777,7 +738,6 @@
 
     pupilOverlay.style.width = `${pupilPX}px`;
     pupilOverlay.style.height = `${pupilPX}px`;
-
     ozRing.style.width = `${ozPx}px`;
     ozRing.style.height = `${ozPx}px`;
 
@@ -788,11 +748,11 @@
     mismatchHighlight.style.height = `${outerPx}px`;
 
     if (overlayMode === 'both' && Math.abs(pupilPX - ozPx) >= 2) {
-      const ringThickness = Math.max(2, (outerPx - innerPx) / 2);
+      const innerStop = (innerPx / outerPx) * 50;
       mismatchHighlight.style.background =
         `radial-gradient(circle,
-          transparent 0 calc(50% - ${ringThickness}px),
-          rgba(255,255,0,.34) calc(50% - ${ringThickness}px) 50%,
+          transparent 0 ${innerStop}%,
+          rgba(255,255,0,.34) ${innerStop}% 50%,
           transparent 50% 100%)`;
       mismatchHighlight.style.opacity = '1';
     } else {
@@ -815,7 +775,7 @@
       ringMid.style.opacity = '0';
       ringNear.style.opacity = '0';
       mismatchHighlight.style.opacity = '0';
-    }else if(overlayMode === 'optic'){
+    }else{
       pupilOverlay.style.opacity = '0';
       ozRing.style.opacity = '1';
       ringDist.style.opacity = '1';
@@ -831,9 +791,9 @@
 
   function setExplain(tags, conclusion){
     explainTags.innerHTML = '';
-    tags.forEach(({label,type})=>{
+    tags.forEach(({label})=>{
       const el = document.createElement('span');
-      el.className = `tag ${type||''}`.trim();
+      el.className = 'tag';
       el.textContent = label;
       explainTags.appendChild(el);
     });
@@ -848,10 +808,7 @@
 
     if(mode === '183'){
       setExplain(
-        [
-          {label:'광학부 사이즈≈동공사이즈'},
-          {label:'전반적 선명'}
-        ],
+        [{label:'광학부 사이즈≈동공사이즈'},{label:'전반적 선명'}],
         '동공사이즈와 광학부가 유사하여 전반적으로 선명하게 보입니다.'
       );
       return;
@@ -859,10 +816,7 @@
 
     if(absDiff < 0.25){
       setExplain(
-        [
-          {label:'광학부 사이즈≈동공사이즈'},
-          {label:'시야 영향 적음'}
-        ],
+        [{label:'광학부 사이즈≈동공사이즈'},{label:'시야 영향 적음'}],
         '동공사이즈와 광학부가 유사하여 시야 영향이 비교적 적습니다.'
       );
       return;
@@ -871,19 +825,13 @@
     if(diff < 0){
       screen.classList.add('mask-center');
       setExplain(
-        [
-          {label:'광학부 사이즈>동공사이즈'},
-          {label:'원거리 흐림'}
-        ],
+        [{label:'광학부 사이즈>동공사이즈'},{label:'원거리 흐림'}],
         '동공사이즈가 광학부보다 작아 중심부터 흐림 발생'
       );
     } else {
       screen.classList.add('mask-periphery','fishbowl');
       setExplain(
-        [
-          {label:'동공사이즈>광학부사이즈'},
-          {label:'주변 흐림 가능'}
-        ],
+        [{label:'동공사이즈>광학부사이즈'},{label:'주변 흐림 가능'}],
         '동공사이즈가 광학부 보다 커서 주변부터 흐림 발생'
       );
     }
@@ -902,7 +850,6 @@
     pupilText.textContent = `${pupilMM.toFixed(1)} mm`;
 
     const ozMM = calcOpticZoneMM(mode, pupilMM);
-
     applyLensRings(ozMM);
     applyOverlays(pupilMM, ozMM);
     applyOverlayVisibility();
@@ -912,7 +859,7 @@
   sphereSlider.addEventListener('input', updateAll);
   addSlider.addEventListener('input', updateAll);
   designRadios.forEach(r=>r.addEventListener('change', updateAll));
-  window.addEventListener('resize', ()=>{ updateAll(); });
+  window.addEventListener('resize', updateAll);
 
   showBothBtn.addEventListener('click', ()=>{
     overlayMode = 'both';
@@ -935,12 +882,10 @@
       stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio:false });
       cam.srcObject = stream;
       camBlur.srcObject = stream;
-
       cam.style.display = 'block';
       camBlur.style.display = 'block';
       fallbackImg.style.display = 'none';
       fallbackImgBlur.style.display = 'none';
-
       camBtn.textContent = '카메라 OFF';
       camBtn.classList.add('primary');
     }catch(err){
@@ -958,12 +903,10 @@
     }
     cam.srcObject = null;
     camBlur.srcObject = null;
-
     cam.style.display = 'none';
     camBlur.style.display = 'none';
     fallbackImg.style.display = 'block';
     fallbackImgBlur.style.display = 'block';
-
     camBtn.textContent = '카메라 ON';
     camBtn.classList.remove('primary');
   }
